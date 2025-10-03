@@ -1,0 +1,65 @@
+source: csv
+file_name: examples/datasets/customers.csv 
+has_header: true
+delimiter: ','
+columns:
+- name: Index
+  type: BIGINT
+- name: Customer Id
+  type: VARCHAR
+- name: First Name
+  type: VARCHAR
+- name: Last Name
+  type: VARCHAR
+- name: Company
+  type: VARCHAR
+- name: City
+  type: VARCHAR
+- name: Country
+  type: VARCHAR
+- name: Phone 1
+  type: VARCHAR
+- name: Phone 2
+  type: VARCHAR
+- name: Email
+  type: VARCHAR
+- name: Subscription Date
+  type: DATE
+- name: Website
+  type: VARCHAR
+
+dq_tests:
+   - dq_test_name: null_values
+     column_name: '"Customer Id"'
+     threshold:
+       type: count
+       operator: "=="
+       value: 0
+   - dq_test_name: null_values
+     column_name: '"Last Name"'
+     threshold:
+       type: pct
+       operator: "<="
+       value: 30
+   - dq_test_name: duplicate_key
+     key_cols: '"Customer Id"'
+     threshold:
+       type: count
+       operator: "=="
+       value: 0
+   - dq_test_name: invalid_records
+     threshold:
+       type: count
+       operator: "<"
+       value: 10
+   - dq_test_name: total_records
+     threshold:
+       type: count
+       operator: ">"
+       value: 1000
+   - dq_test_name: invalid_email_duckdb
+     column_name: '"Email"'
+     threshold:
+      type: count
+      operator: "=="
+      value: 0 

@@ -1,0 +1,52 @@
+source: database
+connection_name: sample_db
+table_name: dw.workorder
+dq_tests:
+   - dq_test_name: null_values
+     column_name: orderqty
+     threshold:
+       type: count
+       operator: "=="
+       value: 0
+   - dq_test_name: value_range
+     column_name: orderqty
+     min_value: 1
+     max_value: 20
+     threshold:
+       type: pct
+       operator: "<="
+       value: 10
+   - dq_test_name: invalid_values
+     column_name: scrapcd
+     valid_value_list: "'B','C'"
+     threshold:
+       type: count
+       operator: "=="
+       value: 0
+   - dq_test_name: duplicate_records
+     column_list: workorderid, productid
+     threshold:
+       type: count
+       operator: "=="
+       value: 0
+   - dq_test_name: orphaned_records
+     child_table: dw.workorder
+     parent_table: dw.product
+     join_cols: c.productid = p.productid
+     column_name: productid
+     threshold:
+       type: count
+       operator: "=="
+       value: 0
+   - dq_test_name: blank_values
+     column_name: scrapcd
+     threshold:
+       type: count
+       operator: "=="
+       value: 0
+   - dq_test_name: data_freshness
+     date_column: si_update_date
+     threshold:
+       type: count
+       operator: "<="
+       value: 1

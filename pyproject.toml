@@ -1,0 +1,44 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dq_tester"
+version = "0.4.0"
+description = "A lightweight data quality testing tool for CSV files and databases"
+readme = "README.md"
+requires-python = ">=3.9"  # Changed from >=3.13
+license = {text = "MIT"}
+authors = [
+    {name = "Chad Ongstad", email = "chad@kodda.io"}
+]
+keywords = ["data quality", "testing", "csv", "database", "duckdb"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Software Development :: Testing",
+]
+dynamic = ["dependencies"]
+
+[project.urls]
+Homepage = "https://github.com/koddachad/dq_tester"
+Repository = "https://github.com/koddachad/dq_tester"
+Issues = "https://github.com/koddachad/dq_tester/issues"
+
+[project.scripts]
+dq_tester = "dq_tester.cli:main"
+dq_dashboard = "dq_tester.dashboard:run_dashboard"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}

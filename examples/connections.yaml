@@ -1,0 +1,11 @@
+connections:
+  - name: sample_db
+    driver: "PostgreSQL"
+    server: "myserver"
+    database: "demo_source"
+    username: "user"
+    password: "password"
+
+  - name: results_db  # If this exists, results will be saved automatically
+    driver: "DuckDB"
+    database: "./results/test_results.duckdb"      

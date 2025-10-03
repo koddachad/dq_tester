@@ -1,0 +1,66 @@
+dq_checks:
+  - name: null_values
+    type: sql
+    sql: |
+      select count(1) 
+      from {table_name} 
+      where {column_name} is null
+
+  - name: value_range
+    type: sql
+    sql: |
+      select count(1) 
+      from {table_name}  
+      where {column_name} not between {min_value} and {max_value}
+
+  - name: invalid_values
+    type: sql
+    sql: |
+      select count(1) 
+      from {table_name}  
+      where {column_name} not in ({valid_value_list})
+
+
+  - name: orphaned_records
+    type: sql
+    sql: |
+      select count(1)
+      from {child_table} c
+      left join {parent_table} p on {join_cols}
+      where p.{column_name} is null
+
+  - name: blank_values
+    type: sql
+    sql: |
+      select count(1)
+      from {table_name}
+      where trim({column_name}) = '' or {column_name} is null
+
+  - name: duplicate_records
+    type: sql
+    sql: |
+      select count(1)
+      from (
+        select count(1)
+        from {table_name}
+        group by {column_list}
+        having count(1) > 1
+      ) t1      
+
+  - name: data_freshness
+    type: sql
+    sql: |
+      select current_date - max({date_column}::date) as days_old
+      from {table_name}
+
+
+  - name: invalid_email_duckdb
+    type: sql
+    sql: |
+      select count(1)
+      from {table_name}
+      WHERE NOT REGEXP_FULL_MATCH(
+          {column_name},
+          '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{{2,}}$'
+      )
+
